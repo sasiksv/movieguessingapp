@@ -22,7 +22,11 @@ def flutterVersionName = localProperties.getProperty("flutter.versionName")
 if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
-
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 android {
     namespace = "com.example.movieguessingapp"
     compileSdk = flutter.compileSdkVersion
@@ -35,7 +39,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.movieguessingapp"
+        applicationId = "com.zealtown.whatsthemovie"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdk = flutter.minSdkVersion
@@ -44,14 +48,19 @@ android {
         versionName = flutterVersionName
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            keyAlias 'keyAlias'
+            keyPassword 'Kccr@2002'
+            storeFile = file('C:/Users/LENOVO/StudioProjects/Zingtek/movieguessingapp/android/app/my-release-key.jks')
+            storePassword 'Kccr@2002'
         }
     }
-}
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }}
 
 flutter {
     source = "../.."
